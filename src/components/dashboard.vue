@@ -7,6 +7,7 @@
         <div>Pão:</div>
         <div>Carne:</div>
         <div>Opcionais:</div>
+        <div>Valor Total:</div>
         <div>Ações:</div>
       </div>
     </div>
@@ -23,6 +24,7 @@
             </li>
           </ul>
         </div>
+        <div>R$ {{ burger.valor }}</div>
         <div>
           <select
             name="status"
@@ -67,7 +69,6 @@ export default {
 
       this.burgers = data;
 
-      console.log(this.burgers);
       this.getStatus();
     },
     async getStatus() {
@@ -120,7 +121,8 @@ export default {
 </script>
 <style scoped>
 #burger-table {
-  max-width: 1200px;
+  height: 20%;
+  max-width: 1800px;
   margin: 0 auto;
 }
 #burger-table-heading,
@@ -128,6 +130,7 @@ export default {
 .burger-table-row {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
 }
 #burger-table-heading {
   font-weight: bold;
@@ -137,11 +140,11 @@ export default {
 
 #burger-table-heading div,
 .burger-table-row div {
-  width: 19%;
+  width: 15%;
 }
 .burger-table-row {
   width: 100%;
-  padding: 12px;
+  padding: 12px;  
   border-bottom: 1px solid #ccc;
 }
 
@@ -164,6 +167,7 @@ select {
   margin: 0 auto;
   cursor: pointer;
   transition: 0.5s;
+  width: 116px;
 }
 .delete-btn:hover {
   background-color: transparent;

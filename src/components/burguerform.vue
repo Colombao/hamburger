@@ -21,7 +21,7 @@
           <select name="pao" id="pao" v-model="pao">
             <option value="default" hidden>Selecione o pão</option>
             <option v-for="pao in paes" :key="pao.id" :value="pao.tipo">
-              {{ pao.tipo }}
+              {{ pao.tipo }} - R$ {{ pao.valor.toFixed(2) }} 
             </option>
           </select>
           <span v-if="formErrors.pao" class="error">{{ formErrors.pao }}</span>
@@ -31,7 +31,7 @@
           <select name="carne" id="carne" v-model="carne">
             <option value="default" hidden>Selecione a sua carne</option>
             <option v-for="carne in carnes" :key="carne.id" :value="carne.tipo">
-              {{ carne.tipo }}
+              {{ carne.tipo }} - R$ {{ carne.valor.toFixed(2) }} 
             </option>
           </select>
           <span v-if="formErrors.carne" class="error">{{
@@ -53,12 +53,17 @@
               v-model="opicionais"
               :value="opcional.tipo"
             />
-            <span>{{ opcional.tipo }}</span>
+            <span>{{ opcional.tipo }} - R$ {{ opcional.valor.toFixed(2) }} </span>
           </div>
           <span v-if="formErrors.opicionais" class="error">{{
             formErrors.opicionais
           }}</span>
         </div>
+        <div id="descricao" class="input-container">
+          <label for="descricao">Descreva alguma observação!</label>
+          <input type="text">
+        </div>
+        <br>
         <div class="input-container">
           <input type="submit" class="submit-btn" value="Criar meu Burguer!" />
         </div>
@@ -88,12 +93,30 @@ export default {
   },
   methods: {
     async getIngredientes() {
-      const req = await fetch("http://localhost:3000/ingredientes");
-      const data = await req.json();
-      this.paes = data.paes;
-      this.carnes = data.carnes;
-      this.opcionaisdata = data.opcionais;
-    },
+  const req = await fetch("http://localhost:3000/ingredientes");
+  const data = await req.json();
+  this.paes = data.paes;
+  this.carnes = data.carnes;
+  this.opcionaisdata = data.opcionais;
+},
+    async getValIngredientes(ingredientes){
+      console.log(ingredientes);
+      let total = 0
+      // for(const element in ingredientes){
+        total+= this.paes.find((element)=>{
+         return element.tipo == ingredientes['pao']
+        }).valor 
+        total+= this.carnes.find((element)=>{
+         return element.tipo == ingredientes['carne']
+        }).valor
+        let opcionaisArray = ingredientes.opicionais.slice(); // Converte a Proxy Array em um array padrão
+        let teste = opcionaisArray.map(opcional => {
+        const opcionalEncontrado = this.opcionaisdata.find(element => element.tipo == opcional);
+        total += opcionalEncontrado ? opcionalEncontrado.valor : 0;
+        });
+        return total
+},
+
     async createBurger(e) {
       e.preventDefault();
       this.formErrors = {}; // Limpar os erros antes de fazer a validação
@@ -121,12 +144,13 @@ export default {
 
       // Verificar se há erros
       if (Object.keys(this.formErrors).length === 0) {
-        // Não há erros, prosseguir com o envio do formulário
+        let total = await this.getValIngredientes({pao:this.pao, carne:this.carne, opicionais:this.opicionais})
         const data = {
           nome: this.nome,
           pao: this.pao,
           carne: this.carne,
           opicionais: Array.from(this.opicionais),
+          valor: total,
           status: "Solicitado",
         };
 
@@ -153,6 +177,7 @@ export default {
         this.carne = "";
         this.pao = "";
         this.opicionais = [];
+        this.total ="";
       }
     },
   },
@@ -222,7 +247,7 @@ select {
 
 .checkbox-container span {
   margin-left: 6px;
-  font-weight: bold;
+  font-size: 13px;
 }
 
 .submit-btn {
