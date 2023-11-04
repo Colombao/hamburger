@@ -65,7 +65,7 @@ body {
     align-items: center;
     min-height: 100vh;
     font-family: "Jost", sans-serif;
-    background: linear-gradient(to bottom, #8b1010, #5e0909, #ca0c0c);
+    background-color: #222;
 }
 .main {
     width: 350px;
