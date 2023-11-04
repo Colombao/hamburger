@@ -52,7 +52,7 @@
 
 <script>
 export default {
-    name: "ModernScreen",
+    name: "Login",
 };
 </script>
 
