@@ -23,6 +23,7 @@
   import axios from "axios"; // Certifique-se de que o Axios está importado
   
   export default {
+    name: "Ingredientes",
     data() {
       return {
         novoIngrediente: {
