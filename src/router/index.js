@@ -40,7 +40,12 @@ const routes = [
             {
                 path: "/Funcionario",
                 name: "Funcionario",
-                component: HomeView, // Usando HomeView, ajuste conforme necessário
+                component: IngredientEdit, // Usando HomeView, ajuste conforme necessário
+            },
+            {
+                path: "/ingredientes/edit/:id",
+                name: "IngredientEdit",
+                component: IngredientEdit,
             },
         ],
     },
