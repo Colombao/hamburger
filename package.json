@@ -8,6 +8,7 @@
     "backend": "json-server --watch db/db.json"
   },
   "dependencies": {
+    "axios": "^1.6.0",
     "core-js": "^3.8.3",
     "json-server": "^0.17.3",
     "sweetalert2": "^11.7.8",

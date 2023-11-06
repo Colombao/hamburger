@@ -1,50 +1,48 @@
 <template>
     <div>
-      <form @submit.prevent="updateIngredient">
+      <form @submit.prevent="addNewIngredient">
         <label for="tipo">Tipo:</label>
-        <input v-model="ingredient.tipo" type="text" id="tipo" name="tipo" required>
+        <input v-model="novoIngrediente.tipo" type="text" id="tipo" name="tipo" required>
   
         <label for="valor">Valor:</label>
-        <input v-model="ingredient.valor" type="number" id="valor" name="valor" required>
+        <input v-model="novoIngrediente.valor" type="number" id="valor" name="valor" required>
   
-        <button type="submit">Salvar Alterações</button>
+        <label for="categoria">Categoria:</label>
+        <select v-model="novoIngrediente.categoria" id="categoria" name="categoria">
+          <option value="paes">Pães</option>
+          <option value="carnes">Carnes</option>
+          <option value="opcionais">Opcionais</option>
+        </select>
+  
+        <button type="submit">Adicionar Ingrediente</button>
       </form>
     </div>
   </template>
   
   <script>
+  import axios from "axios"; // Certifique-se de que o Axios está importado
+  
   export default {
     data() {
       return {
-        ingredient: {
-          tipo: "", // Inicialize os campos com valores vazios
+        novoIngrediente: {
+          tipo: "",
           valor: 0,
+          categoria: "paes", // Categoria padrão (pode ser definida de acordo com sua necessidade)
         },
       };
     },
     methods: {
-      async fetchIngredientDetails() {
-        const ingredientId = this.$route.params.id; // Obtém o ID do parâmetro da rota
+      async addNewIngredient() {
         try {
-          const response = await axios.get(`/api/ingredientes/${ingredientId}`);
-          this.ingredient = response.data; // Armazena os detalhes do ingrediente
+          const response = await axios.post(`/api/ingredientes/${this.novoIngrediente.categoria}`, this.novoIngrediente);
+          this.novoIngrediente = {}; // Limpa o formulário
+          // Atualize a lista de ingredientes após a inserção
+          this.getIngredientes(); // O método getIngredientes deve ser atualizado para buscar novamente a lista de ingredientes após a inserção.
         } catch (error) {
-          console.error("Erro ao buscar detalhes do ingrediente:", error);
+          console.error("Erro ao adicionar novo ingrediente:", error);
         }
       },
-      async updateIngredient() {
-        try {
-          const ingredientId = this.$route.params.id; // Obtém o ID do ingrediente a ser atualizado
-          await axios.put(`/api/ingredientes/${ingredientId}`, this.ingredient);
-          // Redireciona de volta para a lista de ingredientes após a atualização
-          this.$router.push("/ingredientes");
-        } catch (error) {
-          console.error("Erro ao atualizar o ingrediente:", error);
-        }
-      },
-    },
-    created() {
-      this.fetchIngredientDetails();
     },
   };
   </script>
