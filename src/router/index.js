@@ -23,7 +23,7 @@ const routes = [
         component: MainLayout, // Use o layout padrão para a rota de home
         children: [
             {
-                path: "",
+                path: "/home",
                 name: "home",
                 component: HomeView,
             },

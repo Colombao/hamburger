@@ -17,6 +17,7 @@
                         name="email"
                         placeholder="Email"
                         required=""
+                        on-error="Preenche ai paizao"
                     />
                     <input
                         type="password"
@@ -33,26 +34,75 @@
                     <label for="chk" aria-hidden="true">Login</label>
                     <input
                         type="email"
+                        v-model="loginEmail"
                         name="email"
                         placeholder="Email"
                         required=""
                     />
                     <input
                         type="password"
+                        v-model="loginPassword"
                         name="pswd"
                         placeholder="Senha"
                         required=""
                     />
-                    <button>Login</button>
+                    <button @click="handleLogin">Login</button>
                 </form>
             </div>
         </div>
     </body>
 </template>
-
 <script>
+import Swal from "sweetalert2";
+
 export default {
     name: "Login",
+    data() {
+        return {
+            loginEmail: "",
+            loginPassword: "",
+        };
+    },
+    methods: {
+        async handleLogin(e) {
+            e.preventDefault();
+            console.log(this.loginEmail);
+            console.log(this.loginPassword);
+            try {
+                const response = await fetch(
+                    "http://localhost:3000/users?email=" +
+                        this.loginEmail +
+                        "&senha=" +
+                        this.loginPassword
+                );
+                const data = await response.json();
+
+                if (data.length > 0) {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Bem vindo ao Sistema",
+                        timerProgressBar: true,
+                        timer: 1500,
+                        confirmButtonText: "Ok",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Credencias Incorretos!",
+                        showConfirmButton: false,
+                        timerProgressBar: true,
+                        timer: 1500,
+                    });
+                }
+            } catch (error) {
+                console.error("Erro ao fazer login: ", error);
+            }
+        },
+    },
 };
 </script>
 

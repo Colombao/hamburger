@@ -1,5 +1,6 @@
 <template>
     <Login />
+    <router-view />
 </template>
 
 <script>
