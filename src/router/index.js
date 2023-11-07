@@ -5,6 +5,8 @@ import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
 import PedidosView from "../views/Pedidos.vue"; // Importe o componente para a rota de Pedidos
 import SobreView from "../views/SobreView.vue";
+import IngredientesView from "../views/IngredientesView.vue";
+
 
 const routes = [
     {
@@ -40,7 +42,7 @@ const routes = [
             {
                 path: "/Funcionario",
                 name: "Funcionario",
-                component: HomeView, // Usando HomeView, ajuste conforme necessário
+                component: IngredientesView, // Usando HomeView, ajuste conforme necessário
             },
             {
                 path: "/ingredientes/edit/:id",
