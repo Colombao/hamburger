@@ -4,22 +4,24 @@
             <input type="checkbox" id="chk" aria-hidden="true" />
 
             <div class="signup">
-                <form>
+                <form @submit="handleSignUp">
                     <label for="chk" aria-hidden="true">Cadastre-se</label>
                     <input
+                        v-model="cadastroNome"
                         type="text"
                         name="txt"
                         placeholder="Nome de Usuario"
                         required=""
                     />
                     <input
+                        v-model="cadastroEmail"
                         type="email"
                         name="email"
                         placeholder="Email"
                         required=""
-                        on-error="Preenche ai paizao"
                     />
                     <input
+                        v-model="cadastroSenha"
                         type="password"
                         name="pswd"
                         placeholder="Senha"
@@ -30,7 +32,7 @@
             </div>
 
             <div class="login">
-                <form>
+                <form @submit="handleLogin">
                     <label for="chk" aria-hidden="true">Login</label>
                     <input
                         type="email"
@@ -46,7 +48,7 @@
                         placeholder="Senha"
                         required=""
                     />
-                    <button @click="handleLogin">Login</button>
+                    <button>Login</button>
                 </form>
             </div>
         </div>
@@ -59,15 +61,17 @@ export default {
     name: "Login",
     data() {
         return {
+            cadastroEmail: "",
+            cadastroSenha: "",
+            cadastroNome: "",
             loginEmail: "",
             loginPassword: "",
+            id: "",
         };
     },
     methods: {
         async handleLogin(e) {
             e.preventDefault();
-            console.log(this.loginEmail);
-            console.log(this.loginPassword);
             try {
                 const response = await fetch(
                     "http://localhost:3000/users?email=" +
@@ -76,17 +80,16 @@ export default {
                         this.loginPassword
                 );
                 const data = await response.json();
-
+                const nomePerfil = data[0]["nome"];
                 if (data.length > 0) {
                     Swal.fire({
                         icon: "success",
-                        title: "Bem vindo ao Sistema",
+                        title: `Bem vindo ao Sistema ${nomePerfil}`,
                         timerProgressBar: true,
-                        timer: 1500,
                         confirmButtonText: "Ok",
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            
+                            this.$router.push("/home");
                         }
                     });
                 } else {
@@ -100,6 +103,56 @@ export default {
                 }
             } catch (error) {
                 console.error("Erro ao fazer login: ", error);
+            }
+        },
+        async handleSignUp(e) {
+            e.preventDefault();
+            try {
+                const response = await fetch("http://localhost:3000/users", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        nome: this.cadastroNome,
+                        email: this.cadastroEmail,
+                        senha: this.cadastroSenha,
+                        id: this.id,
+                    }),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log("Usuário cadastrado com sucesso:", data);
+                    Swal.fire({
+                        icon: "success",
+                        title: "Cadastro realizado com sucesso!",
+                        showConfirmButton: false,
+                        timerProgressBar: true,
+                        timer: 1500,
+                    });
+                } else {
+                    console.error(
+                        "Erro ao cadastrar usuário:",
+                        response.statusText
+                    );
+                    Swal.fire({
+                        icon: "error",
+                        title: "Erro ao cadastrar usuário!",
+                        showConfirmButton: false,
+                        timerProgressBar: true,
+                        timer: 1500,
+                    });
+                }
+            } catch (error) {
+                console.error("Erro ao cadastrar usuário:", error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Erro ao cadastrar usuário!",
+                    showConfirmButton: false,
+                    timerProgressBar: true,
+                    timer: 1500,
+                });
             }
         },
     },
