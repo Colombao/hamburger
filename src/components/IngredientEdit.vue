@@ -53,15 +53,17 @@ export default {
             carnes: [],
             opcionais: [],
             formErrors: {},
+            id: "",
         };
     },
     methods: {
         async getIngredientes() {
             const req = await fetch("http://localhost:3000/ingredientes");
             const data = await req.json();
+            console.log(data);
             this.paes = data.paes;
             this.carnes = data.carnes;
-            this.opcionaisdata = data.opcionais;
+            this.opcionais = data.opcionais;
         },
         async addNewIngredient(e) {
             e.preventDefault();
@@ -81,27 +83,31 @@ export default {
 
             if (Object.keys(this.formErrors).length === 0) {
                 let novoIngrediente = {
-                    id: "",
                     tipo: this.tipo,
                     valor: this.valor,
+                    id: this.id,
                 };
 
-                if (this.categoria === "paes") {
-                    this.paes.push(novoIngrediente);
-                } else if (this.categoria === "carnes") {
-                    this.carnes.push(novoIngrediente);
-                } else if (this.categoria === "opcionais") {
-                    this.opcionais.push(novoIngrediente);
-                }
+                // if (this.categoria === "paes") {
+                //     this.paes.push(novoIngrediente);
+                // } else if (this.categoria === "carnes") {
+                //     this.carnes.push(novoIngrediente);
+                // } else if (this.categoria === "opcionais") {
+                //     this.opcionais.push(novoIngrediente);
+                // }
 
                 try {
                     console.log(novoIngrediente);
+                    await this.getIngredientes();
+                    console.log([(this.paes, this.carnes, this.opcionais)]);
                     const req = await fetch(
                         "http://localhost:3000/ingredientes",
                         {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify(novoIngrediente),
+                            body: JSON.stringify([
+                                (this.paes, this.carnes, this.opcionais),
+                            ]),
                         }
                     );
                     if (req.ok) {
