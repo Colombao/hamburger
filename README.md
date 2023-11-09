@@ -2,12 +2,20 @@
 
 ## Project setup
 ```
-npm install
+npm install vue
 ```
 
-### Compiles and hot-reloads for development
+```
+npm install @vue/cli --save-dev
+```
+
+### Compiles and hot-reloads for development frontend and backend
 ```
 npm run serve
+```
+
+```
+npm run backend
 ```
 
 ### Compiles and minifies for production
