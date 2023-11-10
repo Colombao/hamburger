@@ -9,12 +9,12 @@
         "backend": "json-server --watch db/db.json"
     },
     "dependencies": {
-        "axios": "^1.6.0",
+        "axios": "^1.6.1",
         "core-js": "^3.8.3",
         "json-server": "^0.17.3",
         "sweetalert2": "^11.7.8",
-        "vue": "^3.2.13",
-        "vue-router": "^4.0.3"
+        "vue": "^3.3.8",
+        "vue-router": "^4.2.5"
     },
     "devDependencies": {
         "@babel/preset-env": "^7.23.2",
