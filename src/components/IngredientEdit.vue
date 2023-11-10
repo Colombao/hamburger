@@ -1,39 +1,49 @@
 <template>
     <div class="ingredient-form">
-        <form @submit.prevent="addNewIngredient" class="form-container">
-            <label for="categoria" class="label">Categoria:</label>
+        <form @submit.prevent="handleCadastrar" class="form-container">
+            <label for="sexo" class="label">Sexo:</label>
             <select
-                v-model="categoria"
-                id="categoria"
-                name="categoria"
+                v-model="sexo"
+                id="sexo"
+                name="sexo"
                 class="select"
             >
-                <option value="paes">Pães</option>
-                <option value="carnes">Carnes</option>
-                <option value="opcionais">Opcionais</option>
-            </select>
+                <option value="Homen">Homem</option>
+                <option value="Mulher">Mulher</option>
+                </select>
 
-            <label for="tipo" class="label">Ingrediente:</label>
+            <label for="nome" class="label">Nome Funcionario:</label>
             <input
-                v-model="tipo"
+                v-model="nome"
                 type="text"
-                id="tipo"
-                name="Tipo"
+                id="nome"
+                name="nome"
                 required
                 class="input"
             />
 
-            <label for="valor" class="label">Valor:</label>
+            <label for="atuacao" class="label">Area de Atuação:</label>
             <input
-                v-model="valor"
-                type="number"
-                id="valor"
-                name="valor"
+                v-model="atuacao"
+                id="atuacao"
+                name="atuacao"
                 required
                 class="input"
             />
 
-            <button type="submit" class="button">Adicionar Ingrediente</button>
+            <label for="cpf" class="label">CPF:</label>
+            <input
+                v-model="cpf"
+                type="text"
+                id="cpf"
+                name="cpf"
+                required
+                class="input"
+                maxlength="11"
+                @input="formatarCPF"
+            />
+
+            <button type="submit" class="button">Cadastrar Funcionario</button>
         </form>
     </div>
 </template>
@@ -46,102 +56,71 @@ export default {
     name: "Ingredientes",
     data() {
         return {
-            tipo: "",
-            valor: "",
-            categoria: "",
-            paes: [],
-            carnes: [],
-            opcionais: [],
+            sexo: "",
+            nome: "",
+            atuacao: "",
+            cpf: "",
             formErrors: {},
             id: "",
         };
     },
     methods: {
-        async getIngredientes() {
-            const req = await fetch("http://localhost:3000/ingredientes");
-            const data = await req.json();
-            console.log(data);
-            this.paes = data.paes;
-            this.carnes = data.carnes;
-            this.opcionais = data.opcionais;
+        formatarCPF() {
+            this.cpf = this.cpf.replace(/\D/g, '');
+
+            this.cpf = this.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
         },
-        async addNewIngredient(e) {
+        async handleCadastrar(e) {
             e.preventDefault();
-            this.formErrors = {};
+            try {
+                const response = await fetch("http://localhost:3000/funcionarios", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        sexo: this.sexo,
+                        nome: this.nome,
+                        atuacao: this.atuacao,
+                        cpf: this.cpf,
+                        id: this.id,
+                    }),
+                });
 
-            if (!this.tipo) {
-                this.formErrors.tipo = "Por favor, digite o tipo.";
-            }
-
-            if (!this.valor) {
-                this.formErrors.valor = "Por favor, digite o valor.";
-            }
-
-            if (this.categoria === "default") {
-                this.formErrors.categoria = "Por favor, selecione a categoria.";
-            }
-
-            if (Object.keys(this.formErrors).length === 0) {
-                let novoIngrediente = {
-                    tipo: this.tipo,
-                    valor: this.valor,
-                    id: this.id,
-                };
-
-                // if (this.categoria === "paes") {
-                //     this.paes.push(novoIngrediente);
-                // } else if (this.categoria === "carnes") {
-                //     this.carnes.push(novoIngrediente);
-                // } else if (this.categoria === "opcionais") {
-                //     this.opcionais.push(novoIngrediente);
-                // }
-
-                try {
-                    console.log(novoIngrediente);
-                    await this.getIngredientes();
-                    console.log([(this.paes, this.carnes, this.opcionais)]);
-                    const req = await fetch(
-                        "http://localhost:3000/ingredientes",
-                        {
-                            method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify([
-                                (this.paes, this.carnes, this.opcionais),
-                            ]),
-                        }
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log("Funcionario cadastrado com sucesso:", data);
+                    Swal.fire({
+                        icon: "success",
+                        title: "Cadastro realizado com sucesso!",
+                        showConfirmButton: false,
+                        timerProgressBar: true,
+                        timer: 1500,
+                    });
+                } else {
+                    console.error(
+                        "Erro ao cadastrar Funcionario:",
+                        response.statusText
                     );
-                    if (req.ok) {
-                        Swal.fire({
-                            icon: "success",
-                            title: "Ingrediente cadastrado!",
-                            showConfirmButton: false,
-                            timerProgressBar: true,
-                            timer: 1500,
-                        });
-
-                        this.tipo = "";
-                        this.valor = "";
-                        this.categoria = "paes";
-                    } else {
-                        Swal.fire({
-                            icon: "error",
-                            title: "Erro ao cadastrar ingrediente.",
-                            text: "Por favor, tente novamente mais tarde.",
-                        });
-                    }
-                } catch (error) {
-                    console.error(error);
                     Swal.fire({
                         icon: "error",
-                        title: "Erro ao cadastrar ingrediente.",
-                        text: "Por favor, tente novamente mais tarde.",
+                        title: "Erro ao cadastrar Funcionario!",
+                        showConfirmButton: false,
+                        timerProgressBar: true,
+                        timer: 1500,
                     });
                 }
+            } catch (error) {
+                console.error("Erro ao cadastrar Funcionario:", error);
+                Swal.fire({
+                    icon: "error",
+                    title: "Erro ao cadastrar Funcionario!",
+                    showConfirmButton: false,
+                    timerProgressBar: true,
+                    timer: 1500,
+                });
             }
         },
-    },
-    mounted() {
-        this.getIngredientes();
     },
     components: {
         Message,
@@ -152,7 +131,9 @@ export default {
 <style scoped>
 .ingredient-form {
     max-width: 400px;
+    height: 810px;
     margin: 0 auto;
+    
 }
 
 .form-container {

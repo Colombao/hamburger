@@ -124,6 +124,7 @@ export default {
   height: 20%;
   max-width: 1800px;
   margin: 0 auto;
+  height: 727px;
 }
 #burger-table-heading,
 #burger-table-rows,

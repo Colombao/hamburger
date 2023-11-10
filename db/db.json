@@ -138,5 +138,21 @@
       "senha": "lucas",
       "id": 2
     }
+  ],
+  "funcionarios": [
+    {
+      "sexo": "Masculino",
+      "nome": "Testefuncionario",
+      "atuacao": "Chefe De Cozinha",
+      "cpf": "345.112.202-20",
+      "id": 0
+    },
+    {
+      "sexo": "Mulher",
+      "nome": "Clara Tornado",
+      "atuacao": "Radialista",
+      "cpf": "412.412.412-41",
+      "id": 1
+    }
   ]
 }
