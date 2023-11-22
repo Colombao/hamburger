@@ -1,0 +1,96 @@
+{
+  "status": 200,
+  "data": {
+    "paes": [
+      {
+        "id": 1,
+        "tipo": "Italiano Branco",
+        "valor": 6.5
+      },
+      {
+        "id": 2,
+        "tipo": "3 Queijos",
+        "valor": 7
+      },
+      {
+        "id": 3,
+        "tipo": "Parmesão e Orégano",
+        "valor": 7.5
+      },
+      {
+        "id": 4,
+        "tipo": "Integral",
+        "valor": 6
+      },
+      {
+        "id": 5,
+        "tipo": "Brioche",
+        "valor": 8
+      },
+      {
+        "id": 6,
+        "tipo": "Low carb",
+        "valor": 9
+      },
+      {
+        "id": 7,
+        "tipo": "Italiano",
+        "valor": 6.5
+      }
+    ],
+    "carnes": [
+      {
+        "id": 1,
+        "tipo": "Maminha",
+        "valor": 15
+      },
+      {
+        "id": 2,
+        "tipo": "Alcatra",
+        "valor": 14
+      },
+      {
+        "id": 3,
+        "tipo": "Picanha",
+        "valor": 18
+      },
+      {
+        "id": 4,
+        "tipo": "Veggie burger",
+        "valor": 12
+      }
+    ],
+    "opcionais": [
+      {
+        "id": 1,
+        "tipo": "Bacon",
+        "valor": 2
+      },
+      {
+        "id": 2,
+        "tipo": "Cheddar",
+        "valor": 2.5
+      },
+      {
+        "id": 3,
+        "tipo": "Salame",
+        "valor": 2
+      },
+      {
+        "id": 4,
+        "tipo": "Tomate",
+        "valor": 1
+      },
+      {
+        "id": 5,
+        "tipo": "Cebola roxa",
+        "valor": 1
+      },
+      {
+        "id": 6,
+        "tipo": "Pepino",
+        "valor": 1.5
+      }
+    ]
+  }
+}
