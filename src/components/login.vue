@@ -120,7 +120,7 @@ export default {
             id: this.id,
           }),
         });
-        // referenciar a issue
+
         if (response.ok) {
           const data = await response.json();
           console.log("Usuário cadastrado com sucesso:", data);
