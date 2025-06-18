@@ -1,7 +1,7 @@
 <template>
   <body>
     <div class="main">
-      <input type="checkbox" id="chk" aria-hidden="true" />
+      <input type="checkbox" id="chk" ref="chk" hidden />
 
       <div class="signup">
         <form @submit="handleSignUp">
@@ -131,10 +131,10 @@ export default {
             timerProgressBar: true,
             timer: 1500,
           });
-
           this.cadastroNome = "";
           this.cadastroEmail = "";
           this.cadastroSenha = "";
+          this.$refs.chk.checked = true;
         } else {
           console.error("Erro ao cadastrar usuário:", response.statusText);
           Swal.fire({
