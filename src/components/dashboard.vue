@@ -7,6 +7,7 @@
         <div>Pão:</div>
         <div>Carne:</div>
         <div>Opcionais:</div>
+        <div>Descrição:</div>
         <div>Valor Total:</div>
         <div>Ações:</div>
       </div>
@@ -24,8 +25,9 @@
             </li>
           </ul>
         </div>
+        <div>{{ burger.descricao || "Sem observações" }}</div>
         <div>R$ {{ burger.valor }}</div>
-        <div>
+        <div class="actions">
           <select
             name="status"
             class="status"
@@ -141,11 +143,11 @@ export default {
 
 #burger-table-heading div,
 .burger-table-row div {
-  width: 15%;
+  width: 12%;
 }
 .burger-table-row {
   width: 100%;
-  padding: 12px;  
+  padding: 12px;
   border-bottom: 1px solid #ccc;
 }
 
@@ -173,5 +175,10 @@ select {
 .delete-btn:hover {
   background-color: transparent;
   color: #222;
+}
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
