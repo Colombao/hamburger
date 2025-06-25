@@ -129,6 +129,18 @@
       "valor": 26,
       "status": "Finalizado",
       "id": 2
+    },
+    {
+      "nome": "sdaadasd",
+      "pao": "3 Queijos",
+      "carne": "Alcatra",
+      "opicionais": [
+        "Salame"
+      ],
+      "valor": 23,
+      "descricao": "aa",
+      "status": "Solicitado",
+      "id": 3
     }
   ],
   "users": [
@@ -189,6 +201,13 @@
       "atuacao": "Radialista",
       "cpf": "412.412.412-41",
       "id": 1
+    },
+    {
+      "sexo": "Homem",
+      "nome": "sdaadasd",
+      "atuacao": "asdasd",
+      "cpf": "13131",
+      "id": 2
     }
   ]
 }

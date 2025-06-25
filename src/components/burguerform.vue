@@ -3,73 +3,65 @@
     <!-- <Message :msg="msg" v-show="msg"/> -->
     <div>
       <form id="burguer-form" @submit="createBurger">
-        <div class="input-container">
-          <label for="nome">Nome do cliente</label>
-          <input
-            type="text"
-            id="nome"
-            name="nome"
-            v-model="nome"
-            placeholder="Digite seu nome"
-          />
-          <span v-if="formErrors.nome" class="error">{{
-            formErrors.nome
-          }}</span>
-        </div>
-        <div class="input-container">
-          <label for="pao">Escolha o pão</label>
-          <select name="pao" id="pao" v-model="pao">
-            <option value="default" hidden>Selecione o pão</option>
-            <option v-for="pao in paes" :key="pao.id" :value="pao.tipo">
-              {{ pao.tipo }} - R$ {{ pao.valor.toFixed(2) }}
-            </option>
-          </select>
-          <span v-if="formErrors.pao" class="error">{{ formErrors.pao }}</span>
-        </div>
-        <div class="input-container">
-          <label for="carne">Escolha a Carne</label>
-          <select name="carne" id="carne" v-model="carne">
-            <option value="default" hidden>Selecione a sua carne</option>
-            <option v-for="carne in carnes" :key="carne.id" :value="carne.tipo">
-              {{ carne.tipo }} - R$ {{ carne.valor.toFixed(2) }}
-            </option>
-          </select>
-          <span v-if="formErrors.carne" class="error">{{
-            formErrors.carne
-          }}</span>
-        </div>
-        <div id="opcionais-container" class="input-container">
-          <label id="opcionais-title" for="opcionais"
-            >Selecione os opcionais</label
-          >
-          <div
-            class="checkbox-container"
-            v-for="opcional in opcionaisdata"
-            :key="opcional.id"
-          >
-            <input
-              type="checkbox"
-              name="opcionais"
-              v-model="opicionais"
-              :value="opcional.tipo"
-            />
-            <span
-              >{{ opcional.tipo }} - R$
-              {{ opcional.valor.toFixed(2) }}
-            </span>
-          </div>
-          <span v-if="formErrors.opicionais" class="error">{{
-            formErrors.opicionais
-          }}</span>
-        </div>
-        <div class="input-container">
-          <label for="descricao">Descreva alguma observação!</label>
-          <input type="text" v-model="descricao" id="descricao" />
-        </div>
+        <StandardInput
+          label="Nome do cliente"
+          type="text"
+          name="nome"
+          v-model="nome"
+          placeholder="Digite seu nome"
+          :required="true"
+          :error="formErrors.nome"
+        />
+
+        <StandardInput
+          label="Escolha o pão"
+          type="select"
+          name="pao"
+          v-model="pao"
+          :options="paes"
+          default-option="Selecione o pão"
+          :required="true"
+          :error="formErrors.pao"
+        />
+
+        <StandardInput
+          label="Escolha a Carne"
+          type="select"
+          name="carne"
+          v-model="carne"
+          :options="carnes"
+          default-option="Selecione a sua carne"
+          :required="true"
+          :error="formErrors.carne"
+        />
+
+        <StandardInput
+          label="Selecione os opcionais"
+          type="checkbox-group"
+          name="opcionais"
+          v-model="opicionais"
+          :options="opcionaisdata"
+          :error="formErrors.opicionais"
+        />
+
+        <StandardInput
+          label="Descreva alguma observação!"
+          type="textarea"
+          name="descricao"
+          v-model="descricao"
+          placeholder="Digite suas observações..."
+          :rows="3"
+        />
+
         <br />
-        <div class="input-container">
-          <input type="submit" class="submit-btn" value="Criar meu Burguer!" />
-        </div>
+
+        <StandardButton
+          type="submit"
+          variant="primary"
+          size="medium"
+          full-width
+          text="Criar meu Burguer!"
+        />
       </form>
     </div>
   </div>
@@ -78,6 +70,8 @@
 <script>
 import Swal from "sweetalert2";
 import Message from "./message.vue";
+import StandardButton from "./StandardButton.vue";
+import StandardInput from "./StandardInput.vue";
 
 export default {
   name: "BurguerForm",
@@ -193,83 +187,19 @@ export default {
   },
   components: {
     Message,
+    StandardInput,
+    StandardButton,
   },
 };
 </script>
 
 <style scoped>
-.error {
-  color: red;
-}
 #burguer-form {
   max-width: 400px;
   margin: 0 auto;
   flex-direction: column;
   align-items: center;
   display: flex;
-}
-
-.input-container {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-  width: 300px;
-}
-
-label {
-  font-weight: bold;
-  margin-bottom: 15px;
-  color: #222;
-  padding: 5px 10px;
-  border-left: 4px solid #fcba03;
-}
-
-input,
-select {
-  padding: 5px 10px;
-  width: 300px;
-}
-
-#opicionais-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-#opicionais-title {
-  width: 100%;
-}
-
-.checkbox-container {
-  display: flex;
-  align-items: flex-start;
-  width: 50%;
-  margin-bottom: 20px;
-}
-
-.checkbox-container span,
-.checkbox-container input {
-  width: auto;
-}
-
-.checkbox-container span {
-  margin-left: 6px;
-  font-size: 13px;
-}
-
-.submit-btn {
-  background-color: #222;
-  color: #fcba03;
-  font-weight: bold;
-  border: 2px solid #222;
-  padding: 10px;
-  margin: 0 auto;
-  cursor: pointer;
-  transition: 0.5s;
-}
-
-.submit-btn:hover {
-  background-color: #fff;
-  color: #222;
+  gap: 10px;
 }
 </style>
