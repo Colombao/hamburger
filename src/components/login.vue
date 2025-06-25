@@ -55,6 +55,7 @@
   </body>
 </template>
 <script>
+import { authStore } from "@/store/auth.js"; // Importe o store de autenticação
 import Swal from "sweetalert2";
 
 export default {
@@ -69,6 +70,12 @@ export default {
       id: "",
     };
   },
+  mounted() {
+    // Verifica se já está logado ao montar o componente
+    if (authStore.isLoggedIn()) {
+      this.$router.push("/home");
+    }
+  },
   methods: {
     async handleLogin(e) {
       e.preventDefault();
@@ -80,11 +87,20 @@ export default {
             this.loginPassword
         );
         const data = await response.json();
-        const nomePerfil = data[0]["nome"];
+
         if (data.length > 0) {
+          const userData = data[0];
+
+          // Salva os dados do usuário no store
+          authStore.login({
+            id: userData.id,
+            nome: userData.nome,
+            email: userData.email,
+          });
+
           Swal.fire({
             icon: "success",
-            title: `Bem vindo ao Sistema ${nomePerfil}`,
+            title: `Bem vindo ao Sistema ${userData.nome}`,
             timerProgressBar: true,
             confirmButtonText: "Ok",
           }).then((result) => {
@@ -95,7 +111,7 @@ export default {
         } else {
           Swal.fire({
             icon: "error",
-            title: "Credencias Incorretos!",
+            title: "Credenciais Incorretas!",
             showConfirmButton: false,
             timerProgressBar: true,
             timer: 1500,
@@ -103,6 +119,13 @@ export default {
         }
       } catch (error) {
         console.error("Erro ao fazer login: ", error);
+        Swal.fire({
+          icon: "error",
+          title: "Erro ao conectar com o servidor!",
+          showConfirmButton: false,
+          timerProgressBar: true,
+          timer: 1500,
+        });
       }
     },
     async handleSignUp(e) {
