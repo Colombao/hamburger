@@ -117,6 +117,18 @@
       "valor": 22,
       "status": "Solicitado",
       "id": 1
+    },
+    {
+      "nome": "Lucas Henrique Da Silva",
+      "pao": "Italiano Branco",
+      "carne": "Maminha",
+      "opicionais": [
+        "Bacon",
+        "Cheddar"
+      ],
+      "valor": 26,
+      "status": "Solicitado",
+      "id": 2
     }
   ],
   "users": [
@@ -137,6 +149,24 @@
       "email": "lucsa.gamer@gmail.com",
       "senha": "lucas",
       "id": 2
+    },
+    {
+      "nome": "lucas",
+      "email": "lucashenriqued092@gmail.com",
+      "senha": "lucas12",
+      "id": 3
+    },
+    {
+      "nome": "lucas",
+      "email": "lucashenriqued092@gmail.com",
+      "senha": "asas",
+      "id": 4
+    },
+    {
+      "nome": "lucas",
+      "email": "lucas.godenot@gmail.com",
+      "senha": "sadasd",
+      "id": 5
     }
   ],
   "funcionarios": [
