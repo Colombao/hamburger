@@ -7,6 +7,7 @@
         <div>Pão:</div>
         <div>Carne:</div>
         <div>Opcionais:</div>
+        <div>Descrição:</div>
         <div>Valor Total:</div>
         <div>Ações:</div>
       </div>
@@ -24,12 +25,14 @@
             </li>
           </ul>
         </div>
+        <div>{{ burger.descricao || "Sem observações" }}</div>
         <div>R$ {{ burger.valor }}</div>
-        <div>
+        <div class="actions">
           <select
             name="status"
             class="status"
             @change="updatedBurger($event, burger.id)"
+            :disabled="burger.status === 'Finalizado'"
           >
             <option
               v-for="s in status"
@@ -105,13 +108,48 @@ export default {
     async updatedBurger(event, id) {
       const option = event.target.value;
 
-      const dataJson = JSON.stringify({ status: option });
+      // Se o status está sendo alterado para "Finalizado", pedir confirmação
+      if (option === "Finalizado") {
+        Swal.fire({
+          title: "Tem certeza?",
+          text: `Deseja finalizar o pedido N° ${id}? Esta ação não poderá ser desfeita.`,
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Sim, finalizar!",
+          cancelButtonText: "Cancelar",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            // Confirma a finalização
+            await this.updateBurgerStatus(id, option);
+            Swal.fire(
+              "Finalizado!",
+              `O pedido N° ${id} foi finalizado com sucesso!`,
+              "success"
+            );
+          } else {
+            // Se cancelar, recarrega os pedidos para reverter a mudança no select
+            this.getPedidos();
+          }
+        });
+      } else {
+        // Para outros status, atualiza diretamente
+        await this.updateBurgerStatus(id, option);
+      }
+    },
+
+    async updateBurgerStatus(id, status) {
+      const dataJson = JSON.stringify({ status: status });
 
       const req = await fetch(`http://localhost:3000/burgers/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: dataJson,
       });
+
+      // Recarrega os pedidos para atualizar a interface
+      this.getPedidos();
     },
   },
   mounted() {
@@ -141,11 +179,11 @@ export default {
 
 #burger-table-heading div,
 .burger-table-row div {
-  width: 15%;
+  width: 12%;
 }
 .burger-table-row {
   width: 100%;
-  padding: 12px;  
+  padding: 12px;
   border-bottom: 1px solid #ccc;
 }
 
@@ -157,6 +195,13 @@ export default {
 select {
   padding: 12px 6px;
   margin-right: 12px;
+}
+
+select:disabled {
+  background-color: #f0f0f0;
+  color: #666;
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 .delete-btn {
   background-color: #333;
@@ -173,5 +218,10 @@ select {
 .delete-btn:hover {
   background-color: transparent;
   color: #222;
+}
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
